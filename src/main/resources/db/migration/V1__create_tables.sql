@@ -1,0 +1,31 @@
+CREATE TABLE boards (
+    board_id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    create_dt DATETIME NOT NULL,
+    update_dt DATETIME,
+);
+CREATE TABLE board_columns (
+    column_board_id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    board_id BIGINT,
+    name VARCHAR(255) NOT NULL,
+    board_order INT NOT NULL,
+    type CHAR(1) NOT NULL,
+    create_dt DATETIME NOT NULL,
+    update_dt DATETIME,
+    FOREIGN KEY (board_id) REFERENCES boards(board_id) ON DELETE SET NULL
+);
+CREATE TABLE cards (
+    card_id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    create_dt DATETIME NOT NULL,
+    update_dt DATETIME,
+    is_blocked BIGINT NOT NULL,
+    blocked_reason VARCHAR(255),
+    unblocked_reason VARCHAR(255),
+    last_blocked_dt DATETIME,
+    last_unblocked_dt DATETIME,
+    last_movement_dt DATETIME,
+    column_board_id BIGINT,
+    FOREIGN KEY (column_board_id) REFERENCES board_columns(column_board_id) ON DELETE SET NULL
+);
